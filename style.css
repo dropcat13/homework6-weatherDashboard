@@ -1,0 +1,25 @@
+.jumbotron {
+    text-align: center;
+    background-color: #77949E;
+    color: white;
+    margin: 0;
+}
+
+.card {
+    background-color: #39C4F6;
+    color: white;
+}
+
+.card-text{
+    margin-bottom: 10px;
+}
+
+#sidePanel{
+    background-color: #EFF2F3;
+    margin: 0;
+    padding: 10px;
+}
+
+.container {
+    margin: 0;
+}

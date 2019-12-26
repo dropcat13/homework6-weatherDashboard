@@ -23,3 +23,11 @@
 .container {
     margin: 0;
 }
+
+#date {
+    padding-left: 10px;
+}
+
+#RHS {
+    margin-left: 20px;
+}

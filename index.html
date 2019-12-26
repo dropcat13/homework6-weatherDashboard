@@ -31,11 +31,15 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-8">
-                    <div class="row">
+                <div class="col-8" >
+                    <div class="row" id="RHS">
                         <div id="current"></div>
+                        <h1 id="date"></h1>
+                        <span><imgid="icon"></span>
+                        <div id="data"></div>
+                        <div id="uvIndex"></div>
                     </div>
-                    <div class="row">
+                    <div class="row" id="RHS">
                         <h3>5-Day Forecast:</h3>
                         <div class="card-deck">
                             <div class="card" style="width: 18rem;">
@@ -68,11 +72,10 @@
                 </div>
             </div>
         </div>
-            <!-- two rows top displays current search result -->
-            <!-- bottom row is split into 5 sections one for each day -->
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
         <script src="../homework6-weatherDashboard/script.js"></script>
     </body>
 </html>

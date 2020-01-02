@@ -1,4 +1,3 @@
-// save place to local storage and append to the table in the card.
 var pastSearches = [];
 var apiData;
 var uvqueryURL;
@@ -8,6 +7,7 @@ var x;
 var previousSearches;
 var APIKey = "92ce17e1323ad237fdf4a085b335d5bf";
 var fivedayqueryURL;
+var glResponse;
 
 renderButtons();
 
@@ -22,10 +22,10 @@ else {
 }
 
 function renderButtons() {
-    $("#pastLocations").empty(); 
-        previousSearches = localStorage.getItem("previous").split(",") 
+    $("#pastLocations").empty();
+    previousSearches = localStorage.getItem("previous").split(",")
     if (previousSearches) {
-        previousSearches = localStorage.getItem("previous").split(",") 
+        previousSearches = localStorage.getItem("previous").split(",")
         console.log("previous searches ", previousSearches);
         for (var i = 0; i < previousSearches.length; i++) {
             var a = $("<button>");
@@ -82,13 +82,12 @@ function setCurrentInfo() {
         console.log(queryURL);
         console.log(response);
 
-        var iconSrc = 'https://openweathermap.org/img/wn/10d@2x.png';
-        // 'https://openweathermap.org/img/wn/' + response.weather[0].iconCode + "@2x.png"; 
+        var iconSrc = 'https://openweathermap.org/img/wn/' + response.weather.icon + "@2x.png";
 
         $("#current").html(`<h1>${response.name}</h1>`)
         let m = moment().format("MM" + " /DD" + " /YY");
         var x = document.getElementById("date").textContent = (m)
-        $("#icon").html(iconSrc)
+        $("#icon").append(iconSrc)
         $("#data").html(`<div><h4>Temperature: ${response.main.temp}ºF</h4></div>
             <h4>Humidity: ${response.main.humidity}%</h4>
             <h4>Wind: ${response.wind.speed}mph</h4>`)
@@ -156,15 +155,37 @@ function setPastInfo() {
 }
 
 function setFiveDayForecast() {
-   // to only get one piece of data per day
-//    var APIKey = localStorage.getItem("APIKey");
+    // to only get one piece of data per day
+    //    var APIKey = localStorage.getItem("APIKey");
 
-   var userSearchLocation = $("#search-input").val().trim();
-   fivedayqueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + userSearchLocation + "&units=imperial&appid=" + APIKey;
-   console.log(response);
-//    if (data.list[i].dt_txt.indexOf("15:00:00") !== -1) {
-            $('#forecastData').append(`<div><h5>Temp: ${response.main.temp}ºF</h5></div>
-            <h5>Humidity: ${response.main.humidity}%<h5>`)
-            $('#forecastIcon').append(response.weather.id)
-//    }
-};
+    var userSearchLocation = $("#search-input").val().trim();
+    fivedayqueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + userSearchLocation + "&units=imperial&appid=" + APIKey;
+
+    $.ajax({
+        url: fivedayqueryURL,
+        method: "GET"
+    }).then(function (response) {
+        apiData = response;
+        //console.log(fivedayqueryURL);
+        console.log(response);
+        glResponse = response
+        for (let i = 0; i < response.list.length; i++) {
+            var res = response.list[i];
+            if (res.dt_txt.indexOf("15:00:00") !== -1) {
+                var card = `<div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">${res.dt_txt.slice(5,5)}</h5>
+                    <img id="forecastIcon" src="http://openweathermap.org/img/w/${res.weather[0].icon}.png">
+                    <h5 id="forecastData"></h5> 
+                    <div><h5>Temp: ${res.main.temp}ºF</h5></div>
+                    <h5>Humidity: ${res.main.humidity}%<h5>
+                    </div>
+                </div>`
+                $('.card-deck').append(card)
+            }
+        }
+    })
+}
+
+// 
+// $('#forecastIcon').append(res.weather.id)

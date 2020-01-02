@@ -82,13 +82,11 @@ function setCurrentInfo() {
         console.log(queryURL);
         console.log(response);
 
-        var iconSrc = 'https://openweathermap.org/img/wn/' + response.weather.icon + "@2x.png";
-
         $("#current").html(`<h1>${response.name}</h1>`)
         let m = moment().format("MM" + " /DD" + " /YY");
         var x = document.getElementById("date").textContent = (m)
-        $("#icon").append(iconSrc)
-        $("#data").html(`<div><h4>Temperature: ${response.main.temp}ºF</h4></div>
+        $("#data").html(`<img id="forecastIcon" src="http://openweathermap.org/img/w/${response.weather[0].icon}.png">
+            <div><h4>Temperature: ${response.main.temp}ºF</h4></div>
             <h4>Humidity: ${response.main.humidity}%</h4>
             <h4>Wind: ${response.wind.speed}mph</h4>`)
 

@@ -4,37 +4,27 @@ var uvqueryURL;
 var latVar;
 var lonVar;
 var x;
-var previousSearches;
+var previousSearches = JSON.parse(localStorage.getItem("previous")) || [];
 var APIKey = "92ce17e1323ad237fdf4a085b335d5bf";
 var fivedayqueryURL;
 var glResponse;
 
 renderButtons();
 
-var storedCities = localStorage.getItem("weatherCities");
-console.log(storedCities);
-if (storedCities === null) {
-    weatherCities = ["Raleigh"];
-}
-else {
-    weatherCities = JSON.parse(storedCities);
-    lastCityIndex = localStorage.getItem("lastCityIndex");
-}
-
 function renderButtons() {
-    $("#pastLocations").empty();
-    previousSearches = localStorage.getItem("previous").split(",")
-    if (previousSearches) {
-        previousSearches = localStorage.getItem("previous").split(",")
+    
+    $("#pastLocations");
+        // previousSearches = JSON.parse(localStorage.getItem("previous"));
         console.log("previous searches ", previousSearches);
-        for (var i = 0; i < previousSearches.length; i++) {
-            var a = $("<button>");
-            a.addClass("pastSearches");
-            a.attr("data-name", previousSearches[i]);
-            a.text(previousSearches[i]);
-            $("#pastLocations").append(a);
+        var a = $("<button>");
+        if (previousSearches){
+            for (var i = 0; i < previousSearches.length; i++) {           
+                a.addClass("pastSearches");
+                a.attr("data-name", previousSearches[i]);
+                a.text(previousSearches[i]);
+                $("#pastLocations").append(a);
+            }
         }
-    }
 }
 
 // cityName = cityName.charAt(0).toUpperCase() + cityName.slice(1); 
@@ -42,6 +32,7 @@ function renderButtons() {
 $("#searchButton").on("click", function (event) {
     setCurrentInfo();
     setFiveDayForecast();
+    renderButtons();
     $("#data").empty();
     $("#search-input").empty();
 });
@@ -61,14 +52,11 @@ function setCurrentInfo() {
     // var APIKey = localStorage.getItem("APIKey");
 
     var userSearchLocation = $("#search-input").val().trim();
-    previousSearches = localStorage.getItem("previous");
-    if (previousSearches) {
-        previousSearches += ',' + userSearchLocation
-    } else {
-        previousSearches = userSearchLocation
-    }
+        // previousSearches = JSON.parse(localStorage.getItem("previous"));
+        previousSearches.push(userSearchLocation);
 
-    localStorage.setItem("previous", previousSearches)
+    localStorage.setItem("previous", JSON.stringify(previousSearches))
+
 
     console.log(userSearchLocation);
 
@@ -167,6 +155,7 @@ function setFiveDayForecast() {
         //console.log(fivedayqueryURL);
         console.log(response);
         glResponse = response
+        $('.card-deck').empty()
         for (let i = 0; i < response.list.length; i++) {
             var res = response.list[i];
             if (res.dt_txt.indexOf("15:00:00") !== -1) {
@@ -178,7 +167,7 @@ function setFiveDayForecast() {
                     <div><h5>Temp: ${res.main.temp}ºF</h5></div>
                     <h5>Humidity: ${res.main.humidity}%<h5>
                     </div>
-                </div>`
+                </div>` 
                 $('.card-deck').append(card)
             }
         }

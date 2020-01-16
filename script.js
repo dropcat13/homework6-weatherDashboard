@@ -13,13 +13,14 @@ renderButtons();
 
 function renderButtons() {
     
-    $("#pastLocations");
+    $("#pastLocations").empty();
         // previousSearches = JSON.parse(localStorage.getItem("previous"));
         console.log("previous searches ", previousSearches);
-        var a = $("<button>");
+       
         if (previousSearches){
             for (var i = 0; i < previousSearches.length; i++) {           
-                a.addClass("pastSearches");
+                var a = $("<button>");
+                a.addClass("pastSearches btn btn-info mr-1 mt-1");
                 a.attr("data-name", previousSearches[i]);
                 a.text(previousSearches[i]);
                 $("#pastLocations").append(a);
@@ -30,7 +31,7 @@ function renderButtons() {
 // cityName = cityName.charAt(0).toUpperCase() + cityName.slice(1); 
 
 $("#searchButton").on("click", function (event) {
-    setCurrentInfo();
+    setCurrentInfo($("#search-input").val().trim());
     setFiveDayForecast();
     renderButtons();
     $("#data").empty();
@@ -42,21 +43,22 @@ $("#searchButton").on("click", function (event) {
 // })
 
 $(document).on("click", ".pastSearches", function () {
-    setPastInfo($(this).text());
+    setCurrentInfo($(this).text());
     // setFiveDayForecast();
 });
 
-function setCurrentInfo() {
+function setCurrentInfo(city) {
     event.preventDefault();
 
     // var APIKey = localStorage.getItem("APIKey");
 
-    var userSearchLocation = $("#search-input").val().trim();
-        // previousSearches = JSON.parse(localStorage.getItem("previous"));
-        previousSearches.push(userSearchLocation);
-
-    localStorage.setItem("previous", JSON.stringify(previousSearches))
-
+    var userSearchLocation = city;
+        previousSearches = JSON.parse(localStorage.getItem("previous")) || [];
+        
+        if (!previousSearches.includes(userSearchLocation)) {
+            previousSearches.push(userSearchLocation);
+            localStorage.setItem("previous", JSON.stringify(previousSearches))
+        }
 
     console.log(userSearchLocation);
 
@@ -159,7 +161,7 @@ function setFiveDayForecast() {
         for (let i = 0; i < response.list.length; i++) {
             var res = response.list[i];
             if (res.dt_txt.indexOf("15:00:00") !== -1) {
-                var card = `<div class="card" style="width: 18rem;">
+                var card = `<div class="card col-sm-6 col-md-4 col-lg-2" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">${res.dt_txt.slice(5,5)}</h5>
                     <img id="forecastIcon" src="http://openweathermap.org/img/w/${res.weather[0].icon}.png">

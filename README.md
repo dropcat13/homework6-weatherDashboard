@@ -7,7 +7,7 @@ The user wants to see the weather anywhere in the world. He can search by city o
 https://dropcat13.github.io/weatherDashboard/
 
 # Link to screenshot of deployed website
-[screenshot] (image)
+![Screenshot 2020-05-19 at 16 57 38](https://user-images.githubusercontent.com/12642091/82377603-e9637980-99f1-11ea-9086-4eac741d9e94.png)
 
 # Technologies used
 This project used HTML, CSS (using bootstrap for layout and mobile readiness), javascript, jQuery and 3rd party API's.
